@@ -11,6 +11,14 @@ export default {
           700: "#1d4ed8",
         },
       },
+      width: {
+        20: "5rem", // 80px
+        30: "7.5rem", // 120px
+      },
+      spacing: {
+        20: "5rem",
+        30: "7.5rem",
+      },
     },
   },
   plugins: [],

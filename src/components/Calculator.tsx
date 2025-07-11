@@ -1,151 +1,279 @@
+import { Card, Button, Group, Stack, Text, Container, Flex, Checkbox } from "@mantine/core";
 import React, { useState } from "react";
 
 interface CalculatorProps {}
 
+interface CardPlayHistory {
+  id: number;
+  cardType: string;
+  cardName: string;
+  comboCount: number;
+  damage: number;
+  evolutionType?: "normal" | "evolution" | "super-evolution";
+}
+
+/**
+ * カードプレイからダメージを計算する関数（進化ボーナス含む）
+ */
+const calculateCardDamage = (cardHistory: CardPlayHistory[], superEvolutionHitChecked: boolean = false): number => {
+  let totalDamage = 0;
+  let rinoCount = 0;
+
+  cardHistory.forEach((card) => {
+    if (card.cardType === "rinoseus") {
+      rinoCount++;
+      let cardDamage = card.comboCount + rinoCount;
+
+      // 個別の進化ボーナスを適用
+      if (card.evolutionType === "evolution") {
+        cardDamage += 2;
+      } else if (card.evolutionType === "super-evolution") {
+        cardDamage += 3;
+      }
+
+      totalDamage += cardDamage;
+    }
+  });
+
+  // 超進化当てボーナス（全体適用）
+  if (superEvolutionHitChecked) totalDamage += 1;
+
+  return totalDamage;
+};
+
+/**
+ * 現在のコンボ数を計算する関数
+ */
+const calculateCurrentCombo = (cardHistory: CardPlayHistory[]): number => {
+  return cardHistory.filter((card) => card.cardType !== "rinoseus").length;
+};
+
+/**
+ * カード名からPPコストを取得する関数
+ */
+const getCardPPCost = (cardName: string): number => {
+  const ppCosts: { [key: string]: number } = {
+    "0コスト": 0,
+    "1コスト": 1,
+    "2コスト": 2,
+    "3コスト": 3,
+    "4コスト": 4,
+    "5コスト": 5,
+    リノセウス: 3,
+    ベビーカーバンクル: 2,
+    虫の知らせ: 1,
+    ベビーカーバンクル超進化: -1,
+  };
+  return ppCosts[cardName] || 0;
+};
+
+/**
+ * 履歴から必要PPを計算する関数
+ */
+const calculateRequiredPP = (cardHistory: CardPlayHistory[]): number => {
+  return cardHistory.reduce((total, card) => total + getCardPPCost(card.cardName), 0);
+};
+
 const Calculator: React.FC<CalculatorProps> = () => {
-  const [display, setDisplay] = useState<string>("0");
-  const [previousValue, setPreviousValue] = useState<number | null>(null);
-  const [operation, setOperation] = useState<string | null>(null);
-  const [waitingForNewValue, setWaitingForNewValue] = useState<boolean>(false);
+  // 基本状態管理（Calculator_origin.tsxから）
+  const [superEvolutionHitChecked, setSuperEvolutionHitChecked] = useState(false);
 
-  const inputNumber = (num: string) => {
-    if (waitingForNewValue) {
-      setDisplay(num);
-      setWaitingForNewValue(false);
-    } else {
-      setDisplay(display === "0" ? num : display + num);
+  // 新しいUI用の状態管理
+  const [cardHistory, setCardHistory] = useState<CardPlayHistory[]>([]);
+  const [nextId, setNextId] = useState<number>(1); // 計算
+  const rinoCount = cardHistory.filter((card) => card.cardType === "rinoseus").length;
+
+  // 履歴からの総ダメージ（進化ボーナス含む）
+  const totalDamage = calculateCardDamage(cardHistory, superEvolutionHitChecked);
+  const currentCombo = calculateCurrentCombo(cardHistory);
+  const requiredPP = calculateRequiredPP(cardHistory); // カードボタンを押したときの処理
+  const handleCardClick = (
+    cardType: string,
+    cardName: string,
+    evolutionType?: "normal" | "evolution" | "super-evolution"
+  ) => {
+    const currentCombo = calculateCurrentCombo(cardHistory);
+    let damage = 0;
+
+    if (cardType === "rinoseus") {
+      const rinoCount = cardHistory.filter((card) => card.cardType === "rinoseus").length + 1;
+      damage = currentCombo + rinoCount;
+
+      // 進化ボーナスを適用
+      if (evolutionType === "evolution") {
+        damage += 2;
+      } else if (evolutionType === "super-evolution") {
+        damage += 3;
+      }
     }
+
+    const newCard: CardPlayHistory = {
+      id: nextId,
+      cardType: cardType,
+      cardName: cardName,
+      comboCount: currentCombo,
+      damage: damage,
+      evolutionType: evolutionType || "normal",
+    };
+
+    setCardHistory([...cardHistory, newCard]);
+    setNextId(nextId + 1);
+  }; // リセット処理
+  const handleReset = () => {
+    setSuperEvolutionHitChecked(false);
+    setCardHistory([]);
+    setNextId(1);
   };
-
-  const inputOperation = (nextOperation: string) => {
-    const inputValue = parseFloat(display);
-
-    if (previousValue === null) {
-      setPreviousValue(inputValue);
-    } else if (operation) {
-      const currentValue = previousValue || 0;
-      const newValue = calculate(currentValue, inputValue, operation);
-
-      setDisplay(String(newValue));
-      setPreviousValue(newValue);
-    }
-
-    setWaitingForNewValue(true);
-    setOperation(nextOperation);
-  };
-
-  const calculate = (firstValue: number, secondValue: number, operation: string): number => {
-    switch (operation) {
-      case "+":
-        return firstValue + secondValue;
-      case "-":
-        return firstValue - secondValue;
-      case "×":
-        return firstValue * secondValue;
-      case "÷":
-        return firstValue / secondValue;
-      case "=":
-        return secondValue;
-      default:
-        return secondValue;
-    }
-  };
-
-  const performCalculation = () => {
-    if (operation && previousValue !== null) {
-      const inputValue = parseFloat(display);
-      const newValue = calculate(previousValue, inputValue, operation);
-
-      setDisplay(String(newValue));
-      setPreviousValue(null);
-      setOperation(null);
-      setWaitingForNewValue(true);
-    }
-  };
-
-  const clear = () => {
-    setDisplay("0");
-    setPreviousValue(null);
-    setOperation(null);
-    setWaitingForNewValue(false);
-  };
-
-  const inputDecimal = () => {
-    if (waitingForNewValue) {
-      setDisplay("0.");
-      setWaitingForNewValue(false);
-    } else if (display.indexOf(".") === -1) {
-      setDisplay(display + ".");
-    }
-  };
-
-  const buttons = [
-    { label: "C", onClick: clear, className: "calc-button-operator col-span-2" },
-    { label: "÷", onClick: () => inputOperation("÷"), className: "calc-button-operator" },
-    { label: "×", onClick: () => inputOperation("×"), className: "calc-button-operator" },
-
-    { label: "7", onClick: () => inputNumber("7"), className: "calc-button" },
-    { label: "8", onClick: () => inputNumber("8"), className: "calc-button" },
-    { label: "9", onClick: () => inputNumber("9"), className: "calc-button" },
-    { label: "-", onClick: () => inputOperation("-"), className: "calc-button-operator" },
-
-    { label: "4", onClick: () => inputNumber("4"), className: "calc-button" },
-    { label: "5", onClick: () => inputNumber("5"), className: "calc-button" },
-    { label: "6", onClick: () => inputNumber("6"), className: "calc-button" },
-    { label: "+", onClick: () => inputOperation("+"), className: "calc-button-operator" },
-
-    { label: "1", onClick: () => inputNumber("1"), className: "calc-button" },
-    { label: "2", onClick: () => inputNumber("2"), className: "calc-button" },
-    { label: "3", onClick: () => inputNumber("3"), className: "calc-button" },
-    { label: "=", onClick: performCalculation, className: "calc-button-equals row-span-2" },
-
-    { label: "0", onClick: () => inputNumber("0"), className: "calc-button col-span-2" },
-    { label: ".", onClick: inputDecimal, className: "calc-button" },
-  ];
-
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-sm mx-auto">
-      {/* ディスプレイ */}
-      <div className="bg-gray-900 text-white p-4 rounded-lg mb-4">
-        <div className="text-right text-3xl font-mono overflow-hidden">{display}</div>
-      </div>
+    <Container size="md" p="md" className="max-w-2xl mx-auto">
+      <Stack gap="lg">
+        {/* 合計ダメージ表示 */}
+        <Card shadow="sm" padding="xl" radius="md" withBorder bg="green.0" className="bg-green-50 border-green-200">
+          <Stack gap="sm">
+            <Text size="xl" fw={600} ta="center" className="text-green-800">
+              総ダメージ: {totalDamage}
+            </Text>
+            <Group gap="lg" justify="center">
+              <Text size="md" fw={500} className="text-green-700">
+                必要PP: {requiredPP}
+              </Text>
+              <Text size="md" fw={500} className="text-green-700">
+                現在のコンボ数: {currentCombo + rinoCount}
+              </Text>
+            </Group>
+          </Stack>
+        </Card>
+        {/* アクションボタン */}
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Stack gap="md">
+            <Text size="lg" fw={600}>
+              アクション
+            </Text>{" "}
+            {/* リノセウスボタン */}
+            <Card shadow="xs" padding="sm" radius="md" withBorder>
+              <Group gap="sm">
+                <Button
+                  size="lg"
+                  color="green"
+                  onClick={() => handleCardClick("rinoseus", "リノセウス", "normal")}
+                  style={{ flex: 3 }}
+                >
+                  リノセウス
+                </Button>{" "}
+                <Button
+                  size="md"
+                  color="yellow"
+                  variant="light"
+                  onClick={() => handleCardClick("riノセウス(進化)", "evolution")}
+                  style={{ flex: 1 }}
+                >
+                  進化
+                </Button>
+                <Button
+                  size="md"
+                  color="purple"
+                  variant="light"
+                  onClick={() => handleCardClick("rinoseus", "リノセウス(超進化)", "super-evolution")}
+                  style={{ flex: 1 }}
+                >
+                  超進化
+                </Button>
+              </Group>
+            </Card>
+            {/* コストカードボタン */}
+            <Group gap="sm">
+              <Button size="md" color="blue" variant="outline" onClick={() => handleCardClick("cost", "0コスト")}>
+                0コスト
+              </Button>
+              <Button size="md" color="blue" variant="outline" onClick={() => handleCardClick("cost", "1コスト")}>
+                1コスト
+              </Button>
+              <Button size="md" color="blue" variant="outline" onClick={() => handleCardClick("cost", "2コスト")}>
+                2コスト
+              </Button>
+              <Button size="md" color="blue" variant="outline" onClick={() => handleCardClick("cost", "3コスト")}>
+                3コスト
+              </Button>
+            </Group>
+            {/* 追加カードボタン */}
+            <Group gap="sm">
+              <Button size="md" color="orange" variant="outline" onClick={() => handleCardClick("cost", "4コスト")}>
+                4コスト
+              </Button>
+              <Button size="md" color="orange" variant="outline" onClick={() => handleCardClick("cost", "5コスト")}>
+                5コスト
+              </Button>
+              <Button
+                size="md"
+                color="purple"
+                variant="outline"
+                onClick={() => handleCardClick("cost", "ベビーカーバンクル")}
+              >
+                ベビーカーバンクル
+              </Button>
+              <Button size="md" color="purple" variant="outline" onClick={() => handleCardClick("cost", "虫の知らせ")}>
+                虫の知らせ
+              </Button>
+            </Group>
+            {/* 特殊カードボタン */}
+            <Group gap="sm">
+              <Button
+                size="md"
+                color="pink"
+                variant="outline"
+                onClick={() => handleCardClick("cost", "ベビーカーバンクル超進化")}
+              >
+                ベビーカーバンクル超進化
+              </Button>
+            </Group>
+            {/* リセットボタン */}
+            <Button size="lg" color="red" variant="outline" onClick={handleReset} mt="md">
+              リセット
+            </Button>
+          </Stack>
+        </Card>{" "}
+        {/* 詳細設定 */}
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Stack gap="md">
+            <Text size="lg" fw={600}>
+              詳細設定
+            </Text>
 
-      {/* ボタングリッド */}
-      <div className="grid grid-cols-4 gap-3">
-        {buttons.map((button, index) => (
-          <button key={index} onClick={button.onClick} className={button.className}>
-            {button.label}
-          </button>
-        ))}
-      </div>
-
-      {/* 追加機能エリア */}
-      <div className="mt-6 pt-4 border-t border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-700 mb-3">便利機能</h3>
-        <div className="grid grid-cols-2 gap-2">
-          <button
-            onClick={() => {
-              const result = Math.sqrt(parseFloat(display));
-              setDisplay(String(result));
-              setWaitingForNewValue(true);
-            }}
-            className="btn-secondary text-sm"
-          >
-            √
-          </button>
-          <button
-            onClick={() => {
-              const result = Math.pow(parseFloat(display), 2);
-              setDisplay(String(result));
-              setWaitingForNewValue(true);
-            }}
-            className="btn-secondary text-sm"
-          >
-            x²
-          </button>
-        </div>
-      </div>
-    </div>
+            <Text size="md" fw={500}>
+              加点ダメージ
+            </Text>
+            <Group gap="md">
+              <Checkbox
+                label="超進化当て +1"
+                checked={superEvolutionHitChecked}
+                onChange={(event) => setSuperEvolutionHitChecked(event.currentTarget.checked)}
+              />
+            </Group>
+          </Stack>
+        </Card>
+        {/* 履歴表示 */}
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Text size="lg" fw={600} mb="sm">
+            履歴
+          </Text>
+          {cardHistory.length === 0 ? (
+            <Text c="dimmed" ta="center" py="md">
+              履歴なし
+            </Text>
+          ) : (
+            <Flex gap="xs" wrap="wrap">
+              {cardHistory.map((item, index) => (
+                <Text key={item.id} size="sm" c="blue.6" fw={600} px="xs">
+                  {item.cardName}
+                  {item.cardType === "rinoseus" && ` (${item.damage})`}
+                  {index < cardHistory.length - 1 && " → "}
+                </Text>
+              ))}
+            </Flex>
+          )}
+        </Card>
+      </Stack>
+    </Container>
   );
 };
 
