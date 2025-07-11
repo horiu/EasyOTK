@@ -4,9 +4,9 @@ import { Text, Title } from "@mantine/core";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="container mx-auto px-4 py-8">
-        <header className="text-center mb-8">
+    <div className="min-h-screen">
+      <div className="container mx-auto px-4 py-4">
+        <header className="text-center">
           <p className="text-gray-600">
             {/* タイトル */}
             <Title order={1} ta="center" c="green">

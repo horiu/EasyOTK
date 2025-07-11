@@ -1,4 +1,4 @@
-import { Card, Button, Group, Stack, Text, Container, Flex, Checkbox } from "@mantine/core";
+import { Card, Button, Group, Stack, Text, Container, Flex, Checkbox, Grid } from "@mantine/core";
 import React, { useState } from "react";
 
 interface CalculatorProps {}
@@ -125,145 +125,47 @@ const Calculator: React.FC<CalculatorProps> = () => {
     setNextId(1);
   };
   return (
-    <Container size="md" p="md" className="max-w-2xl mx-auto">
-      <Stack gap="lg">
+    <Container size="md" px="sm" py="sm" className="min-h-screen max-w-4xl mx-auto px-2 sm:px-4 md:px-6">
+      <Stack gap="md" className="md:space-y-2">
         {/* 合計ダメージ表示 */}
-        <Card shadow="sm" padding="xl" radius="md" withBorder bg="green.0" className="bg-green-50 border-green-200">
-          <Stack gap="sm">
-            <Text size="xl" fw={600} ta="center" className="text-green-800">
-              総ダメージ: {totalDamage}
-            </Text>
-            <Group gap="lg" justify="center">
-              <Text size="md" fw={500} className="text-green-700">
-                必要PP: {requiredPP}
+        <Card shadow="sm" padding="md" radius="md" withBorder>
+          <Group justify="space-between" align="center" wrap="nowrap" className="gap-2 sm:gap-4">
+            <div className="text-center flex-1">
+              <Text size="sm" c="dimmed" className="text-xs sm:text-sm">
+                総ダメージ
               </Text>
-              <Text size="md" fw={500} className="text-green-700">
-                現在のコンボ数: {currentCombo + rinoCount}
+              <Text size="xl" fw={700} c="green.7" className="text-lg sm:text-xl md:text-2xl">
+                {totalDamage}
               </Text>
-            </Group>
-          </Stack>
-        </Card>
-        {/* アクションボタン */}
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Stack gap="md">
-            <Text size="lg" fw={600}>
-              アクション
-            </Text>{" "}
-            {/* リノセウスボタン */}
-            <Card shadow="xs" padding="sm" radius="md" withBorder>
-              <Group gap="sm">
-                <Button
-                  size="lg"
-                  color="green"
-                  onClick={() => handleCardClick("rinoseus", "リノセウス", "normal")}
-                  style={{ flex: 3 }}
-                >
-                  リノセウス
-                </Button>{" "}
-                <Button
-                  size="md"
-                  color="yellow"
-                  variant="light"
-                  onClick={() => handleCardClick("riノセウス(進化)", "evolution")}
-                  style={{ flex: 1 }}
-                >
-                  進化
-                </Button>
-                <Button
-                  size="md"
-                  color="purple"
-                  variant="light"
-                  onClick={() => handleCardClick("rinoseus", "リノセウス(超進化)", "super-evolution")}
-                  style={{ flex: 1 }}
-                >
-                  超進化
-                </Button>
-              </Group>
-            </Card>
-            {/* コストカードボタン */}
-            <Group gap="sm">
-              <Button size="md" color="blue" variant="outline" onClick={() => handleCardClick("cost", "0コスト")}>
-                0コスト
-              </Button>
-              <Button size="md" color="blue" variant="outline" onClick={() => handleCardClick("cost", "1コスト")}>
-                1コスト
-              </Button>
-              <Button size="md" color="blue" variant="outline" onClick={() => handleCardClick("cost", "2コスト")}>
-                2コスト
-              </Button>
-              <Button size="md" color="blue" variant="outline" onClick={() => handleCardClick("cost", "3コスト")}>
-                3コスト
-              </Button>
-            </Group>
-            {/* 追加カードボタン */}
-            <Group gap="sm">
-              <Button size="md" color="orange" variant="outline" onClick={() => handleCardClick("cost", "4コスト")}>
-                4コスト
-              </Button>
-              <Button size="md" color="orange" variant="outline" onClick={() => handleCardClick("cost", "5コスト")}>
-                5コスト
-              </Button>
-              <Button
-                size="md"
-                color="purple"
-                variant="outline"
-                onClick={() => handleCardClick("cost", "ベビーカーバンクル")}
-              >
-                ベビーカーバンクル
-              </Button>
-              <Button size="md" color="purple" variant="outline" onClick={() => handleCardClick("cost", "虫の知らせ")}>
-                虫の知らせ
-              </Button>
-            </Group>
-            {/* 特殊カードボタン */}
-            <Group gap="sm">
-              <Button
-                size="md"
-                color="pink"
-                variant="outline"
-                onClick={() => handleCardClick("cost", "ベビーカーバンクル超進化")}
-              >
-                ベビーカーバンクル超進化
-              </Button>
-            </Group>
-            {/* リセットボタン */}
-            <Button size="lg" color="red" variant="outline" onClick={handleReset} mt="md">
-              リセット
-            </Button>
-          </Stack>
-        </Card>{" "}
-        {/* 詳細設定 */}
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Stack gap="md">
-            <Text size="lg" fw={600}>
-              詳細設定
-            </Text>
-
-            <Text size="md" fw={500}>
-              加点ダメージ
-            </Text>
-            <Group gap="md">
-              <Checkbox
-                label="超進化当て +1"
-                checked={superEvolutionHitChecked}
-                onChange={(event) => setSuperEvolutionHitChecked(event.currentTarget.checked)}
-              />
-            </Group>
-          </Stack>
+            </div>
+            <div className="text-center flex-1">
+              <Text size="sm" c="dimmed" className="text-xs sm:text-sm">
+                必要PP
+              </Text>
+              <Text size="xl" fw={700} c="green.7" className="text-lg sm:text-xl md:text-2xl">
+                {requiredPP}
+              </Text>
+            </div>
+            <div className="text-center flex-1">
+              <Text size="sm" c="dimmed" className="text-xs sm:text-sm">
+                コンボ数
+              </Text>
+              <Text size="xl" fw={700} c="green.7" className="text-lg sm:text-xl md:text-2xl">
+                {currentCombo + rinoCount}
+              </Text>
+            </div>
+          </Group>
         </Card>
         {/* 履歴表示 */}
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Text size="lg" fw={600} mb="sm">
-            履歴
-          </Text>
+        <Card shadow="sm" padding="md" radius="md" withBorder>
           {cardHistory.length === 0 ? (
-            <Text c="dimmed" ta="center" py="md">
-              履歴なし
+            <Text c="dimmed" ta="center" py="md" className="text-sm">
+              アクション履歴なし
             </Text>
           ) : (
-            <Flex gap="xs" wrap="wrap">
+            <Flex gap="xs" wrap="wrap" justify="center" className="text-center">
               {cardHistory.map((item, index) => (
-                <Text key={item.id} size="sm" c="blue.6" fw={600} px="xs">
+                <Text key={item.id} size="sm" c="blue.6" fw={600} px="xs" className="text-xs sm:text-sm">
                   {item.cardName}
                   {item.cardType === "rinoseus" && ` (${item.damage})`}
                   {index < cardHistory.length - 1 && " → "}
@@ -271,6 +173,173 @@ const Calculator: React.FC<CalculatorProps> = () => {
               ))}
             </Flex>
           )}
+        </Card>
+        {/* アクション */}
+        <Card shadow="sm" padding="md" radius="md" withBorder>
+          <Group justify="space-between" align="center" mb="md">
+            <Text size="lg" fw={600} c="green.9" className="text-base sm:text-lg">
+              アクション
+            </Text>
+            <Button
+              size="sm"
+              color="red"
+              variant="outline"
+              onClick={handleReset}
+              className="min-w-[80px] sm:min-w-[100px] min-h-8 sm:min-h-10 text-xs sm:text-sm"
+            >
+              リセット
+            </Button>
+          </Group>
+          <Grid gutter="md" className="gap-3 md:gap-4">
+            <Grid.Col span={12} className="flex flex-col">
+              <Card shadow="xs" padding="sm" radius="md" withBorder className="h-full flex flex-col bg-gray-50">
+                <Flex gap="xs" justify="flex-start" align="center" direction="row">
+                  <Button
+                    size="lg"
+                    color="green"
+                    onClick={() => handleCardClick("rinoseus", "リノセウス", "normal")}
+                    fullWidth
+                    className="min-h-12 sm:min-h-14 text-sm sm:text-base p-1"
+                  >
+                    リノセウス
+                  </Button>
+                  <Button
+                    size="sm"
+                    color="yellow"
+                    variant="light"
+                    onClick={() => handleCardClick("rinoseus", "リノセウス(進化)", "evolution")}
+                    className="min-h-10 sm:min-h-12 text-xs sm:text-sm min-w-[70px] sm:min-w-[70px]"
+                  >
+                    進化
+                  </Button>
+                  <Button
+                    size="sm"
+                    color="purple"
+                    variant="light"
+                    onClick={() => handleCardClick("rinoseus", "リノセウス(超進化)", "super-evolution")}
+                    className="min-h-10 sm:min-h-12 text-xs sm:text-sm min-w-[80px] sm:min-w-[80px]"
+                  >
+                    超進化
+                  </Button>
+                </Flex>
+              </Card>
+            </Grid.Col>
+
+            {/* コストカードボタン */}
+            <Grid.Col span={12} className="flex flex-col">
+              <Card shadow="xs" padding="sm" radius="md" withBorder className="h-full flex flex-col bg-gray-50">
+                <Stack gap="sm" className="h-full">
+                  <div className="space-y-2">
+                    <Text size="sm" fw={500} mb="xs" c="gray.7" className="text-xs sm:text-sm">
+                      カードコスト
+                    </Text>
+                    <Group gap="xs" grow className="grid grid-cols-4 gap-1 sm:gap-2">
+                      <Button
+                        size="compact-sm"
+                        color="blue"
+                        variant="outline"
+                        onClick={() => handleCardClick("cost", "0コスト")}
+                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm"
+                      >
+                        0
+                      </Button>
+                      <Button
+                        size="compact-sm"
+                        variant="outline"
+                        onClick={() => handleCardClick("cost", "1コスト")}
+                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm"
+                      >
+                        1
+                      </Button>
+                      <Button
+                        size="compact-sm"
+                        variant="outline"
+                        onClick={() => handleCardClick("cost", "2コスト")}
+                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm"
+                      >
+                        2
+                      </Button>
+                      <Button
+                        size="compact-sm"
+                        variant="outline"
+                        onClick={() => handleCardClick("cost", "3コスト")}
+                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm"
+                      >
+                        3
+                      </Button>
+                      <Button
+                        size="compact-sm"
+                        variant="outline"
+                        onClick={() => handleCardClick("cost", "4コスト")}
+                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm"
+                      >
+                        4
+                      </Button>
+                      <Button
+                        size="compact-sm"
+                        variant="outline"
+                        onClick={() => handleCardClick("cost", "5コスト")}
+                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm"
+                      >
+                        5
+                      </Button>
+                    </Group>
+                  </div>{" "}
+                  {/* 高コスト・特殊 */}
+                  <div className="space-y-2">
+                    <Text size="sm" fw={500} mb="xs" c="gray.7" className="text-xs sm:text-sm">
+                      特殊
+                    </Text>
+                    <div className="space-y-2">
+                      {" "}
+                      <Group gap="xs" grow className="grid grid-cols-2 gap-1 sm:gap-2">
+                        <Button
+                          size="sm"
+                          color="blue"
+                          variant="outline"
+                          onClick={() => handleCardClick("cost", "ベビーカーバンクル")}
+                          className="min-h-9 sm:min-h-10 text-xs sm:text-sm px-1"
+                        >
+                          カーバンクル
+                        </Button>
+                        <Button
+                          size="sm"
+                          color="blue"
+                          variant="outline"
+                          onClick={() => handleCardClick("cost", "虫の知らせ")}
+                          className="min-h-9 sm:min-h-10 text-xs sm:text-sm px-1"
+                        >
+                          虫の知らせ
+                        </Button>
+                      </Group>
+                      <Button
+                        size="sm"
+                        color="purple"
+                        variant="outline"
+                        onClick={() => handleCardClick("cost", "ベビーカーバンクル超進化")}
+                        fullWidth
+                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm px-1"
+                      >
+                        カーバンクル超進化
+                      </Button>
+                    </div>
+                  </div>
+                </Stack>
+              </Card>
+            </Grid.Col>
+
+            {/* 超進化当て設定 */}
+            <Grid.Col span={12}>
+              <Flex justify="start" align="center" py="sm">
+                <Checkbox
+                  label="超進化当て +1"
+                  checked={superEvolutionHitChecked}
+                  onChange={(event) => setSuperEvolutionHitChecked(event.currentTarget.checked)}
+                  className="text-sm sm:text-base"
+                />
+              </Flex>
+            </Grid.Col>
+          </Grid>
         </Card>
       </Stack>
     </Container>
