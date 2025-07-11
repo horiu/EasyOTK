@@ -125,12 +125,12 @@ const Calculator: React.FC<CalculatorProps> = () => {
     setNextId(1);
   };
   return (
-    <Container size="md" px="sm" py="sm" className="min-h-screen max-w-4xl mx-auto px-2 sm:px-4 md:px-6">
+    <Container size="md" px="sm" py="sm" className="mx-auto min-h-screen max-w-4xl px-2 sm:px-4 md:px-6">
       <Stack gap="md" className="md:space-y-2">
         {/* 合計ダメージ表示 */}
         <Card shadow="sm" padding="md" radius="md" withBorder>
           <Group justify="space-between" align="center" wrap="nowrap" className="gap-2 sm:gap-4">
-            <div className="text-center flex-1">
+            <div className="flex-1 text-center">
               <Text size="sm" c="dimmed" className="text-xs sm:text-sm">
                 総ダメージ
               </Text>
@@ -138,7 +138,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                 {totalDamage}
               </Text>
             </div>
-            <div className="text-center flex-1">
+            <div className="flex-1 text-center">
               <Text size="sm" c="dimmed" className="text-xs sm:text-sm">
                 必要PP
               </Text>
@@ -146,7 +146,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                 {requiredPP}
               </Text>
             </div>
-            <div className="text-center flex-1">
+            <div className="flex-1 text-center">
               <Text size="sm" c="dimmed" className="text-xs sm:text-sm">
                 コンボ数
               </Text>
@@ -185,21 +185,21 @@ const Calculator: React.FC<CalculatorProps> = () => {
               color="red"
               variant="outline"
               onClick={handleReset}
-              className="min-w-[80px] sm:min-w-[100px] min-h-8 sm:min-h-10 text-xs sm:text-sm"
+              className="min-h-8 min-w-[80px] text-xs sm:min-h-10 sm:min-w-[100px] sm:text-sm"
             >
               リセット
             </Button>
           </Group>
           <Grid gutter="md" className="gap-3 md:gap-4">
             <Grid.Col span={12} className="flex flex-col">
-              <Card shadow="xs" padding="sm" radius="md" withBorder className="h-full flex flex-col bg-gray-50">
+              <Card shadow="xs" padding="sm" radius="md" withBorder className="flex h-full flex-col bg-gray-50">
                 <Flex gap="xs" justify="flex-start" align="center" direction="row">
                   <Button
                     size="lg"
                     color="green"
                     onClick={() => handleCardClick("rinoseus", "リノセウス", "normal")}
                     fullWidth
-                    className="min-h-12 sm:min-h-14 text-sm sm:text-base p-1"
+                    className="min-h-12 p-1 text-sm sm:min-h-14 sm:text-base"
                   >
                     リノセウス
                   </Button>
@@ -208,7 +208,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                     color="yellow"
                     variant="light"
                     onClick={() => handleCardClick("rinoseus", "リノセウス(進化)", "evolution")}
-                    className="min-h-10 sm:min-h-12 text-xs sm:text-sm min-w-[70px] sm:min-w-[70px]"
+                    className="min-h-10 min-w-[70px] text-xs sm:min-h-12 sm:min-w-[70px] sm:text-sm"
                   >
                     進化
                   </Button>
@@ -217,7 +217,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                     color="purple"
                     variant="light"
                     onClick={() => handleCardClick("rinoseus", "リノセウス(超進化)", "super-evolution")}
-                    className="min-h-10 sm:min-h-12 text-xs sm:text-sm min-w-[80px] sm:min-w-[80px]"
+                    className="min-h-10 min-w-[80px] text-xs sm:min-h-12 sm:min-w-[80px] sm:text-sm"
                   >
                     超進化
                   </Button>
@@ -227,7 +227,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
 
             {/* コストカードボタン */}
             <Grid.Col span={12} className="flex flex-col">
-              <Card shadow="xs" padding="sm" radius="md" withBorder className="h-full flex flex-col bg-gray-50">
+              <Card shadow="xs" padding="sm" radius="md" withBorder className="flex h-full flex-col bg-gray-50">
                 <Stack gap="sm" className="h-full">
                   <div className="space-y-2">
                     <Text size="sm" fw={500} mb="xs" c="gray.7" className="text-xs sm:text-sm">
@@ -239,7 +239,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                         color="blue"
                         variant="outline"
                         onClick={() => handleCardClick("cost", "0コスト")}
-                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm"
+                        className="min-h-9 text-xs sm:min-h-10 sm:text-sm"
                       >
                         0
                       </Button>
@@ -247,7 +247,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                         size="compact-sm"
                         variant="outline"
                         onClick={() => handleCardClick("cost", "1コスト")}
-                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm"
+                        className="min-h-9 text-xs sm:min-h-10 sm:text-sm"
                       >
                         1
                       </Button>
@@ -255,7 +255,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                         size="compact-sm"
                         variant="outline"
                         onClick={() => handleCardClick("cost", "2コスト")}
-                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm"
+                        className="min-h-9 text-xs sm:min-h-10 sm:text-sm"
                       >
                         2
                       </Button>
@@ -263,7 +263,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                         size="compact-sm"
                         variant="outline"
                         onClick={() => handleCardClick("cost", "3コスト")}
-                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm"
+                        className="min-h-9 text-xs sm:min-h-10 sm:text-sm"
                       >
                         3
                       </Button>
@@ -271,7 +271,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                         size="compact-sm"
                         variant="outline"
                         onClick={() => handleCardClick("cost", "4コスト")}
-                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm"
+                        className="min-h-9 text-xs sm:min-h-10 sm:text-sm"
                       >
                         4
                       </Button>
@@ -279,7 +279,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                         size="compact-sm"
                         variant="outline"
                         onClick={() => handleCardClick("cost", "5コスト")}
-                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm"
+                        className="min-h-9 text-xs sm:min-h-10 sm:text-sm"
                       >
                         5
                       </Button>
@@ -298,7 +298,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                           color="blue"
                           variant="outline"
                           onClick={() => handleCardClick("cost", "ベビーカーバンクル")}
-                          className="min-h-9 sm:min-h-10 text-xs sm:text-sm px-1"
+                          className="min-h-9 px-1 text-xs sm:min-h-10 sm:text-sm"
                         >
                           カーバンクル
                         </Button>
@@ -307,7 +307,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                           color="blue"
                           variant="outline"
                           onClick={() => handleCardClick("cost", "虫の知らせ")}
-                          className="min-h-9 sm:min-h-10 text-xs sm:text-sm px-1"
+                          className="min-h-9 px-1 text-xs sm:min-h-10 sm:text-sm"
                         >
                           虫の知らせ
                         </Button>
@@ -318,7 +318,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                         variant="outline"
                         onClick={() => handleCardClick("cost", "ベビーカーバンクル超進化")}
                         fullWidth
-                        className="min-h-9 sm:min-h-10 text-xs sm:text-sm px-1"
+                        className="min-h-9 px-1 text-xs sm:min-h-10 sm:text-sm"
                       >
                         カーバンクル超進化
                       </Button>

@@ -1,22 +1,15 @@
-# SVW Brinocalc
+# Easy OTK - SVWB リノセウス打点計算ツール
 
-シンプルで使いやすい React 製計算アプリです。
+ShadowVerse World Beyond の「リノセウス」打点計算ツールです。カードプレイの履歴を入力し、リアルタイムでダメージと必要 PP を計算します。
 
 ## 技術スタック
 
 - **React** - UI ライブラリ
 - **TypeScript** - 型安全な JavaScript
+- **Mantine** - モダンな React UI ライブラリ
 - **Tailwind CSS** - ユーティリティファースト CSS フレームワーク
 - **Vite** - 高速ビルドツール
 - **gh-pages** - GitHub Pages デプロイツール
-
-## 機能
-
-- 基本的な四則演算（+、-、×、÷）
-- 小数点計算
-- 平方根（√）
-- 二乗計算（x²）
-- レスポンシブデザイン
 
 ## 開発
 
@@ -35,14 +28,26 @@ pnpm install
 pnpm dev
 ```
 
-### ビルド
+### スクリプト
 
 ```bash
+# 開発サーバー起動
+pnpm dev
+
 # プロダクションビルド
 pnpm build
 
+# ローカル用ビルド（相対パス）
+pnpm build:local
+
+# ESLint によるコード検査
+pnpm lint
+
 # ビルド結果のプレビュー
 pnpm preview
+
+# GitHub Pages にデプロイ
+pnpm deploy
 ```
 
 ## デプロイ
@@ -59,16 +64,24 @@ pnpm preview
 
 ```bash
 # プロダクションビルドとデプロイを実行
-pnpm run deploy
+pnpm deploy
 ```
 
 ### デプロイの流れ
 
-1. `pnpm run deploy` コマンドを実行
+1. `pnpm deploy` コマンドを実行
 2. TypeScript コンパイルと Vite ビルドが実行される
 3. `dist` フォルダの内容が `gh-pages` ブランチにプッシュされる
 4. GitHub Pages が自動的にサイトを更新
 
-## ライセンス
+## プロジェクト構成
 
-MIT License
+```
+src/
+├── App.tsx                 # メインアプリケーション
+├── main.tsx               # エントリーポイント
+├── components/
+│   └── Calculator.tsx     # メインの計算機コンポーネント
+├── hooks/                 # カスタムフック（今後の拡張用）
+└── styles/               # スタイル関連ファイル
+```
