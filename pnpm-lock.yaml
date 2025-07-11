@@ -43,7 +43,7 @@ importers:
         specifier: ^0.4.6
         version: 0.4.20(eslint@8.57.1)
       gh-pages:
-        specifier: ^6.1.1
+        specifier: ^6.3.0
         version: 6.3.0
       postcss:
         specifier: ^8.4.38

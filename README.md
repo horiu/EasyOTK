@@ -8,7 +8,7 @@
 - **TypeScript** - 型安全な JavaScript
 - **Tailwind CSS** - ユーティリティファースト CSS フレームワーク
 - **Vite** - 高速ビルドツール
-- **GitHub Actions** - 自動デプロイ
+- **gh-pages** - GitHub Pages デプロイツール
 
 ## 機能
 
@@ -47,22 +47,27 @@ pnpm preview
 
 ## デプロイ
 
-このプロジェクトは GitHub Actions を使用して自動デプロイされます。
+このプロジェクトは `gh-pages` パッケージを使用して GitHub Pages にデプロイします。
 
 ### GitHub Pages の設定
 
 1. GitHub リポジトリの **Settings** > **Pages** に移動
-2. **Source** を **GitHub Actions** に設定
-3. `main` ブランチにプッシュすると自動的にデプロイされます
+2. **Source** を **Deploy from a branch** に設定
+3. **Branch** を **gh-pages** に設定
 
-### 自動デプロイの流れ
+### デプロイ手順
 
-1. `main` ブランチにコードをプッシュ
-2. GitHub Actions が自動的に実行
-3. 依存関係のインストール
-4. TypeScript のコンパイル
-5. Vite でビルド
-6. GitHub Pages にデプロイ
+```bash
+# プロダクションビルドとデプロイを実行
+pnpm run deploy
+```
+
+### デプロイの流れ
+
+1. `pnpm run deploy` コマンドを実行
+2. TypeScript コンパイルと Vite ビルドが実行される
+3. `dist` フォルダの内容が `gh-pages` ブランチにプッシュされる
+4. GitHub Pages が自動的にサイトを更新
 
 ## ライセンス
 
