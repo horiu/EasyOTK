@@ -22,7 +22,7 @@ function App() {
           <Calculator />
         </main>
 
-        <footer className="text-center mt-12 text-gray-500">
+        <footer className="mt-12 text-center text-gray-500">
           <p>&copy; 2025 SVWBrinocalc. All rights reserved.</p>
         </footer>
       </div>
