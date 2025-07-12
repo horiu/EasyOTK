@@ -47,7 +47,7 @@ pnpm lint
 pnpm preview
 
 # GitHub Pages にデプロイ
-pnpm deploy
+pnpm run deploy
 ```
 
 ## デプロイ
@@ -64,12 +64,12 @@ pnpm deploy
 
 ```bash
 # プロダクションビルドとデプロイを実行
-pnpm deploy
+pnpm run deploy
 ```
 
 ### デプロイの流れ
 
-1. `pnpm deploy` コマンドを実行
+1. `pnpm run deploy` コマンドを実行
 2. TypeScript コンパイルと Vite ビルドが実行される
 3. `dist` フォルダの内容が `gh-pages` ブランチにプッシュされる
 4. GitHub Pages が自動的にサイトを更新
