@@ -1,0 +1,26 @@
+{
+  "name": "Easy OTK - SVWBリノセウス打点計算ツール",
+  "short_name": "Easy OTK",
+  "description": "Easy OTKはShadowverse: Worlds Beyondのリノセウス打点計算を簡単に行える無料ツールです。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#22c55e",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/EasyOTK_Logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48 32x32 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["games", "utilities"],
+  "lang": "ja",
+  "dir": "ltr"
+}

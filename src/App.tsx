@@ -9,16 +9,12 @@ function App() {
   return (
     <div className="flex min-h-screen flex-col">
       <div className="container mx-auto flex max-w-4xl flex-grow flex-col py-1 sm:px-4 md:px-6">
-        <header className="mb-2 grid grid-cols-[1fr_10fr_1fr] items-center px-2 sm:px-4 md:px-6">
-          <div></div>
-          <div className="space-y-1 text-center">
-            {/* タイトル */}
-            <Title order={1} ta="center" c="green">
+        <header className="mb-2 grid grid-cols-[10fr_1fr] items-center px-2 sm:px-4 md:px-6">
+          <div className="flex items-center justify-start gap-2">
+            <img src="/EasyOTK_Logo.png" alt="Easy OTK Logo" className="h-8 w-8" />
+            <Title order={1} ta="center" c="green" className="m-0">
               Easy OTK
             </Title>
-            <Text ta="center" c="dimmed" className="text-xs sm:text-sm">
-              SVWBのリノセウス打点計算ツール
-            </Text>
           </div>
           <div className="flex justify-end">
             <ActionIcon
@@ -26,15 +22,17 @@ function App() {
               size="lg"
               variant="outline"
               color={dark ? "gray" : "gray"}
-              // color={dark ? "yellow" : "blue"}
               aria-label="ダークモード切替"
             >
               {dark ? <IconSun size={18} /> : <IconMoon size={18} />}
             </ActionIcon>
           </div>
+          <Text ta="center" c="dimmed" className="flex justify-start text-xs sm:text-sm">
+            SVWBのリノセウス打点計算ツール
+          </Text>
         </header>
 
-        <main className="flex flex-grow justify-center">
+        <main className="flex flex-grow flex-col justify-start">
           <Calculator />
         </main>
       </div>

@@ -13,6 +13,16 @@ export default defineConfig({
         manualChunks: undefined,
       },
     },
+    // SEO最適化: ソースマップを無効化してファイルサイズを削減
+    sourcemap: false,
+    // 圧縮設定
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
   },
   publicDir: "public",
 });

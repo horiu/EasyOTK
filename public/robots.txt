@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://easyotk.com/sitemap.xml
