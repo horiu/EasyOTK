@@ -27,11 +27,6 @@ pnpm build
 # ビルド結果のプレビュー
 pnpm preview
 
-# ESLint によるコード検査
-pnpm lint
-
-# コードフォーマット
-pnpm format
 ```
 
 ## デプロイ
