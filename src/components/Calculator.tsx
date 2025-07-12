@@ -19,7 +19,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
   } = useCalculator();
 
   return (
-    <Container size="md" px="sm" py="sm" className="mx-auto min-h-screen max-w-4xl px-2 sm:px-4 md:px-6">
+    <Container size="md" px="sm" py="sm" className="mx-auto max-w-4xl px-2 sm:px-4 md:px-6">
       <Stack gap="md" className="md:space-y-2">
         {/* 合計ダメージ表示 */}
         <StatsDisplay stats={stats} />

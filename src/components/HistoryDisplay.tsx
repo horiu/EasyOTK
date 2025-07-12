@@ -9,17 +9,17 @@ interface HistoryDisplayProps {
 export const HistoryDisplay: React.FC<HistoryDisplayProps> = ({ cardHistory }) => {
   const renderCardItem = (item: CardPlayHistory, index: number) => {
     let displayName = item.cardName;
-    let textColor = "blue.7";
+    let textColor = "blue";
 
     // リノセウスの場合、進化段階に応じて色と表示名を設定
     if (item.cardType === CARD_TYPES.rinoseus) {
       displayName = "リノセウス";
       if (item.evolutionType === "normal") {
-        textColor = "green.7";
+        textColor = "green";
       } else if (item.evolutionType === "evolution") {
-        textColor = "yellow.7";
+        textColor = "yellow";
       } else if (item.evolutionType === "super-evolution") {
-        textColor = "grape.8";
+        textColor = "grape";
       }
     }
 

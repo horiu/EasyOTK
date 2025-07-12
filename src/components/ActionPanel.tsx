@@ -73,7 +73,7 @@ export const ActionPanel: React.FC<ActionPanelProps> = ({
               </Button>
               <Button
                 size="sm"
-                color="purple"
+                color="grape"
                 variant="outline"
                 onClick={() => onCardClick(CARD_TYPES.rinoseus, "リノセウス(超進化)", "super-evolution")}
                 disabled={hasAnySpecialCard}
@@ -126,7 +126,7 @@ export const ActionPanel: React.FC<ActionPanelProps> = ({
                   </Group>
                   <Button
                     size="sm"
-                    color="purple"
+                    color="grape"
                     variant="outline"
                     onClick={() => onCardClick(CARD_TYPES.cost, "ベビーカーバンクル超進化")}
                     disabled={hasAnySpecialCard}
