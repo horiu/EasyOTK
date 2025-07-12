@@ -83,6 +83,18 @@ const Calculator: React.FC<CalculatorProps> = () => {
   const [nextId, setNextId] = useState<number>(1); // 計算
   const rinoCount = cardHistory.filter((card) => card.cardType === "rinoseus").length;
 
+  // 特殊なカードが既に使われているかチェック
+  const hasEvolutionRino = cardHistory.some(
+    (card) => card.cardType === "rinoseus" && card.evolutionType === "evolution"
+  );
+  const hasSuperEvolutionRino = cardHistory.some(
+    (card) => card.cardType === "rinoseus" && card.evolutionType === "super-evolution"
+  );
+  const hasSuperEvolutionCarbuncle = cardHistory.some((card) => card.cardName === "ベビーカーバンクル超進化");
+
+  // いずれかの特殊カードが使われているかチェック
+  const hasAnySpecialCard = hasEvolutionRino || hasSuperEvolutionRino || hasSuperEvolutionCarbuncle;
+
   // 履歴からの総ダメージ（進化ボーナス含む）
   const totalDamage = calculateCardDamage(cardHistory, superEvolutionHitChecked);
   const currentCombo = calculateCurrentCombo(cardHistory);
@@ -157,20 +169,55 @@ const Calculator: React.FC<CalculatorProps> = () => {
           </Group>
         </Card>
         {/* 履歴表示 */}
-        <Card shadow="sm" padding="md" radius="md" withBorder>
+        <Card shadow="sm" padding="md" radius="md" withBorder classNames={{ root: "h-24" }}>
           {cardHistory.length === 0 ? (
             <Text c="dimmed" ta="center" py="md" className="text-sm">
               アクション履歴なし
             </Text>
           ) : (
-            <Flex gap="xs" wrap="wrap" justify="center" className="text-center">
-              {cardHistory.map((item, index) => (
-                <Text key={item.id} size="sm" c="blue.6" fw={600} px="xs" className="text-xs sm:text-sm">
-                  {item.cardName}
-                  {item.cardType === "rinoseus" && ` (${item.damage})`}
-                  {index < cardHistory.length - 1 && " → "}
-                </Text>
-              ))}
+            <Flex
+              // gap="xs"
+              wrap="wrap"
+              // justify="center"
+              className="w-full overflow-x-auto text-center"
+              // style={{ width: "100%" }}
+            >
+              {cardHistory.map((item, index) => {
+                let displayName = item.cardName;
+                let textColor = "blue.7";
+
+                // リノセウスの場合、進化段階に応じて色と表示名を設定
+                if (item.cardType === "rinoseus") {
+                  displayName = "リノセウス";
+                  if (item.evolutionType === "normal") {
+                    textColor = "green.7";
+                  } else if (item.evolutionType === "evolution") {
+                    textColor = "yellow.7";
+                  } else if (item.evolutionType === "super-evolution") {
+                    textColor = "grape.8";
+                  }
+                }
+
+                // ベビーカーバンクル超進化の場合の特別な表示処理
+                if (item.cardName === "ベビーカーバンクル超進化") {
+                  return (
+                    <Text key={item.id} size="sm" fw={600} px="xs" className="text-xs sm:text-sm">
+                      <Text component="span" c="grape.8" fw={600}>
+                        ベビーカーバンクル
+                      </Text>
+                      {index < cardHistory.length - 1 && " → "}
+                    </Text>
+                  );
+                }
+
+                return (
+                  <Text key={item.id} size="sm" c={textColor} fw={600} px="xs" className="text-xs sm:text-sm">
+                    {displayName}
+                    {item.cardType === "rinoseus" && ` (${item.damage})`}
+                    {index < cardHistory.length - 1 && " → "}
+                  </Text>
+                );
+              })}
             </Flex>
           )}
         </Card>
@@ -197,6 +244,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                   <Button
                     size="lg"
                     color="green"
+                    variant="outline"
                     onClick={() => handleCardClick("rinoseus", "リノセウス", "normal")}
                     fullWidth
                     className="min-h-12 p-1 text-sm sm:min-h-14 sm:text-base"
@@ -206,8 +254,9 @@ const Calculator: React.FC<CalculatorProps> = () => {
                   <Button
                     size="sm"
                     color="yellow"
-                    variant="light"
+                    variant="outline"
                     onClick={() => handleCardClick("rinoseus", "リノセウス(進化)", "evolution")}
+                    disabled={hasAnySpecialCard}
                     className="min-h-10 min-w-[70px] text-xs sm:min-h-12 sm:min-w-[70px] sm:text-sm"
                   >
                     進化
@@ -215,8 +264,9 @@ const Calculator: React.FC<CalculatorProps> = () => {
                   <Button
                     size="sm"
                     color="purple"
-                    variant="light"
+                    variant="outline"
                     onClick={() => handleCardClick("rinoseus", "リノセウス(超進化)", "super-evolution")}
+                    disabled={hasAnySpecialCard}
                     className="min-h-10 min-w-[80px] text-xs sm:min-h-12 sm:min-w-[80px] sm:text-sm"
                   >
                     超進化
@@ -291,7 +341,6 @@ const Calculator: React.FC<CalculatorProps> = () => {
                       特殊
                     </Text>
                     <div className="space-y-2">
-                      {" "}
                       <Group gap="xs" grow className="grid grid-cols-2 gap-1 sm:gap-2">
                         <Button
                           size="sm"
@@ -317,6 +366,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
                         color="purple"
                         variant="outline"
                         onClick={() => handleCardClick("cost", "ベビーカーバンクル超進化")}
+                        disabled={hasAnySpecialCard}
                         fullWidth
                         className="min-h-9 px-1 text-xs sm:min-h-10 sm:text-sm"
                       >
@@ -330,7 +380,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
 
             {/* 超進化当て設定 */}
             <Grid.Col span={12}>
-              <Flex justify="start" align="center" py="sm">
+              <Flex justify="start" align="center">
                 <Checkbox
                   label="超進化当て +1"
                   checked={superEvolutionHitChecked}
