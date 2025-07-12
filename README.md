@@ -12,7 +12,7 @@ Easy OTKはShadowverse: Worlds Beyondのリノセウス打点計算を行なう�
 - Node.js 18 以上
 - pnpm
 
-### スクリプト
+## スクリプト
 
 ```bash
 # 依存関係のインストール
@@ -24,14 +24,11 @@ pnpm dev
 # プロダクションビルド
 pnpm build
 
-# ローカル用ビルド（相対パス）
-pnpm build:local
+# ビルド結果のプレビュー
+pnpm preview
 
 # ESLint によるコード検査
 pnpm lint
-
-# ビルド結果のプレビュー
-pnpm preview
 
 # コードフォーマット
 pnpm format
