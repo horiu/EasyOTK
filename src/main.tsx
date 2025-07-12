@@ -4,12 +4,15 @@ import App from "./App.tsx";
 import "./index.css";
 import "@mantine/core/styles.css";
 
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <MantineProvider>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </MantineProvider>
+  <>
+    <ColorSchemeScript defaultColorScheme="auto" />
+    <MantineProvider defaultColorScheme="auto">
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </MantineProvider>
+  </>
 );
