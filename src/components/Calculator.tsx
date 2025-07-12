@@ -239,7 +239,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
           </Group>
           <Grid gutter="md" className="gap-3 md:gap-4">
             <Grid.Col span={12} className="flex flex-col">
-              <Card shadow="xs" padding="sm" radius="md" withBorder className="flex h-full flex-col bg-gray-50">
+              <Card shadow="xs" padding="sm" radius="md" withBorder className="flex h-full flex-col">
                 <Flex gap="xs" justify="flex-start" align="center" direction="row">
                   <Button
                     size="lg"
@@ -277,7 +277,7 @@ const Calculator: React.FC<CalculatorProps> = () => {
 
             {/* コストカードボタン */}
             <Grid.Col span={12} className="flex flex-col">
-              <Card shadow="xs" padding="sm" radius="md" withBorder className="flex h-full flex-col bg-gray-50">
+              <Card shadow="xs" padding="sm" radius="md" withBorder className="flex h-full flex-col">
                 <Stack gap="sm" className="h-full">
                   <div className="space-y-2">
                     <Text size="sm" fw={500} mb="xs" c="gray.7" className="text-xs sm:text-sm">
